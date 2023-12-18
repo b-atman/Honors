@@ -1,0 +1,47 @@
+# Assuming you have a data frame named students with columns height_range (as factor) and frequency
+students <- data.frame(height_range = factor(c("110-120", "120-130", "130-140", "140-150", "150-160")),
+                       frequency = c(10, 20, 30, 20, 10))
+
+# Calculate the midpoints of the height ranges.
+students$midpoint <- sapply(strsplit(as.character(students$height_range), "-"), function(x) mean(as.numeric(x)))
+
+# Calculate the mean
+mean_height <- sum(students$midpoint * students$frequency) / sum(students$frequency)
+# Calculate the variance
+variance_height <- sum(((students$midpoint - mean_height)^2) * students$frequency) / sum(students$frequency)
+# Calculate the standard deviation
+sd_height <- sqrt(variance_height)
+# Print the results
+print(paste("Mean height:", mean_height))
+print(paste("Variance of height:", variance_height))
+print(paste("Standard deviation of height:", sd_height))
+
+
+
+# Load necessary libraries
+library(ggplot2)
+library(stats)
+# Assuming students data frame with columns: midpoint and frequency
+# Create a histogram of the frequency distribution
+ggplot(students, aes(x = midpoint, y = frequency)) +
+  geom_col() +
+  labs(x = "Height (midpoint)", y = "Frequency", title = "Histogram of Height Frequencies")
+
+
+# Fit a GLM to the data
+# Assuming a Poisson distribution for the frequency data, you can adjust this as needed
+glm_fit <- glm(frequency ~ midpoint, data = students, family = poisson())
+# Print a summary of the GLM fit
+summary(glm_fit)
+
+
+# Plot the GLM fit
+ggplot(students, aes(x = midpoint, y = frequency)) +
+  geom_point() +
+  geom_line(aes(y = predict(glm_fit, type = "response")), color = "blue") +
+  labs(x = "Height (midpoint)", y = "Frequency", title = "GLM Fit to Height Frequencies")
+
+
+
+
+

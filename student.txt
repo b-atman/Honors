@@ -1,0 +1,52 @@
+Exploring student’s dataset for 
+1. Displaying the first ten rows of the data frame.
+2. What is your gender? 
+3. What is your height in inches?
+4. Displaying the drinking preferences of the students and plotting their frequencies 
+using a bar chart.
+5. Displaying the summary of hours of sleep and plot histogram.
+6. Plotting a boxplot of the hours of sleep for each level of gender.
+7. Summary of haircut for each level of gender.
+8. Constructing a histogram of DVDs and display the summary.
+9. Constructing a frequency table of the individual values of DVDs that were observed.
+10. Constructing parallel boxplots of the heights using the Gender variable.
+
+#1.
+library('LearnBayes')
+data(studentdata)
+print(studentdata[1:10,])
+
+#2.
+table(studentdata$Gender)
+
+#3. 
+table(studentdata$Height)
+
+#4. 
+table(studentdata$Drink)
+barplot(table(studentdata$Drink),xlab="Drink",ylab="Count")
+
+#5. 
+hours.of.sleep = studentdata$WakeUp - studentdata$ToSleep
+summary(hours.of.sleep)
+hist(hours.of.sleep,main="")
+
+#6. 
+boxplot(hours.of.sleep~studentdata$Gender,ylab="Hours of Sleep")
+
+#7. 
+female.Haircut=studentdata$Haircut[studentdata$Gender=="female"]
+summary(female.Haircut)
+male.Haircut=studentdata$Haircut[studentdata$Gender=="male"]
+summary(male.Haircut)
+
+#8. 
+hist(studentdata$Dvds)
+print(summary(studentdata$Dvds))
+
+#9. 
+print(table(studentdata$Dvds))
+barplot(table(studentdata$Dvds))
+
+
+#10. boxplot(studentdata$Height~studentdata$Gender)
